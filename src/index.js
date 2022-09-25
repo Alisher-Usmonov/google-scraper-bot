@@ -1,11 +1,15 @@
 const TelegramBot = require("node-telegram-bot-api");
-const { TOKEN } = require("../config");
+const { TOKEN, APP_URL } = require("../config");
 const CommandController = require("./controllers/CommandController");
 const MessageController = require("./controllers/MessageController");
 
 const bot = new TelegramBot(TOKEN, {
-    polling: true
+    webHook: {
+        port: process.env.PORT
+    }
 });
+
+bot.setWebHook(`${APP_URL}/bot${TOKEN}`)
 
 bot.on("message", (msg) => {
     const { from: { id: userId } } = msg;
