@@ -1,10 +1,8 @@
 const puppeteer = require("puppeteer");
-const path = require("path");
 
 module.exports = async (bot, msg) => {
     const { from: { id: userId } } = msg;
     const { text } = msg;
-    const imagePath = path.join(__dirname, "..", "..", "/assets", "result.png");
     const browser = await puppeteer.launch();
     try {
         if (text) {
@@ -14,11 +12,12 @@ module.exports = async (bot, msg) => {
                 height: 2048,
             })
             await page.goto(`https://google.com/search?q=${text}`);
-            await page.screenshot({ path: imagePath })
+            const screenshot = await page.screenshot({ encoding: "binary" })
 
-            await bot.sendPhoto(userId, imagePath, {
+            await bot.sendPhoto(userId, screenshot, {
                 caption: `<a href="google_scraper_bot.t.me">Google Scraper</a> natijalari`,
-                parse_mode: "HTML"
+                parse_mode: "HTML",
+                contentType: "application/octet-stream"
             })
 
             browser.close();

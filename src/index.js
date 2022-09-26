@@ -4,12 +4,10 @@ const CommandController = require("./controllers/CommandController");
 const MessageController = require("./controllers/MessageController");
 
 const bot = new TelegramBot(TOKEN, {
-    webHook: {
-        port: process.env.PORT
-    }
+    polling: true
 });
 
-bot.setWebHook(`${APP_URL}/bot${TOKEN}`)
+// bot.setWebHook(`${APP_URL}/bot${TOKEN}`)
 
 bot.on("message", (msg) => {
     const { from: { id: userId } } = msg;
